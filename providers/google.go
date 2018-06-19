@@ -180,13 +180,13 @@ func getAdminService(adminEmail string, credentialsReader io.Reader) *admin.Serv
 }
 
 func userInGroup(service *admin.Service, groups []string, email string) bool {
-	user, err := fetchUser(service, email)
-	if err != nil {
-		log.Printf("error fetching user: %v", err)
-		return false
-	}
-	id := user.Id
-	custID := user.CustomerId
+	// user, err := fetchUser(service, email)
+	// if err != nil {
+	// 	log.Printf("error fetching user: %v", err)
+	// 	return false
+	// }
+	// id := user.Id
+	// custID := user.CustomerId
 
 	for _, group := range groups {
 		members, err := fetchGroupMembers(service, group)
@@ -202,13 +202,13 @@ func userInGroup(service *admin.Service, groups []string, email string) bool {
 		for _, member := range members {
 			switch member.Type {
 			case "CUSTOMER":
-				if member.Id == custID {
+				if member.Email == email {
 					return true
 				}
 			case "USER":
 				// @munnerz: also allow validating user based on email alone
 				// See: https://github.com/bitly/oauth2_proxy/issues/172#issuecomment-239507061
-				if member.Email == email || member.Id == id {
+				if member.Email == email {
 					return true
 				}
 			}
