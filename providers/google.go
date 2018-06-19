@@ -206,7 +206,9 @@ func userInGroup(service *admin.Service, groups []string, email string) bool {
 					return true
 				}
 			case "USER":
-				if member.Id == id {
+				// @munnerz: also allow validating user based on email alone
+				// See: https://github.com/bitly/oauth2_proxy/issues/172#issuecomment-239507061
+				if member.Email == email || member.Id == id {
 					return true
 				}
 			}
